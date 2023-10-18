@@ -1,0 +1,1 @@
+This is a script so all security issues with it are your own responsibility. Dont bother me with any issues you may have. I do not give any guarantee for this scripts security or what it may cause when executing
