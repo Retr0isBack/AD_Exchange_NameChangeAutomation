@@ -6,7 +6,8 @@ gmo -l | ipmo
 #Fill "" with Sharepoint url of table
 Connect-PnPOnline -Url "" -Interactive
 
-$ListItems = Get-PnPListItem -List "1122519b-0ea3-4be0-b25f-149292138820"
+# Fill the "" with an List-code  in the pattern of this:  1111111a-0aa1-1aa1-a11a-111111111111  . Every number was changed to 1 and every letter disregarding if uppercase or lowercase has been changed to a lowercase a
+$ListItems = Get-PnPListItem -List ""
 
 # Get the current date
 $CurrentDate = Get-Date
@@ -32,10 +33,12 @@ foreach ($item in $ListItems) {
     # Check if the date is in the past or equal to the current date and if the status is "Approved"
     if ($ItemDate -le $CurrentDate -and $ItemStatus -eq "Approved") {
         # Perform the AD and Exchange operations
-        Get-ADUser -Filter "UserPrincipalName -eq '$OldUPN'" -Server ugfde555.de.ugfischer.com | Set-ADUser -UserPrincipalName $NewUPN -DisplayName $FirstName -sn $newLastName
+        # Change ** for your Active Directories Adress.
+        Get-ADUser -Filter "UserPrincipalName -eq '$OldUPN'" -Server ** | Set-ADUser -UserPrincipalName $NewUPN -DisplayName $FirstName -sn $newLastName
 
         # Additional Exchange Online operations based on $OldUPN and $NewUPN
-        Set-RemoteMailbox -Identity "UserPrincipalName -eq '$OldUPN'" -PrimarySmtpAddress $NewUPN -EmailAddressPolicyEnabled $false -DomainController ugfde445.de.ugfischer.com
+        # Change ** for your Exchange Onlines LDAP Adress
+        Set-RemoteMailbox -Identity "UserPrincipalName -eq '$OldUPN'" -PrimarySmtpAddress $NewUPN -EmailAddressPolicyEnabled $false -DomainController **
     }
 }
 
