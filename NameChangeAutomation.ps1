@@ -32,13 +32,16 @@ foreach ($item in $ListItems) {
 
     # Check if the date is in the past or equal to the current date and if the status is "Approved"
     if ($ItemDate -le $CurrentDate -and $ItemStatus -eq "Approved") {
+     Write-Host " Approval Accepted. Specified Date Reached."
         # Perform the AD and Exchange operations
         # Change ** for your Active Directories Adress.
         Get-ADUser -Filter "UserPrincipalName -eq '$OldUPN'" -Server ** | Set-ADUser -UserPrincipalName $NewUPN -DisplayName $FirstName -sn $newLastName
+        Write-Host " AD User has been changed for: "$OldUPN
 
         # Additional Exchange Online operations based on $OldUPN and $NewUPN
         # Change ** for your Exchange Onlines LDAP Adress
         Set-RemoteMailbox -Identity "UserPrincipalName -eq '$OldUPN'" -PrimarySmtpAddress $NewUPN -EmailAddressPolicyEnabled $false -DomainController **
+        Write-Host " Exchange Online E-Mail has been changed for: "$OldUPN
     }
 }
 
